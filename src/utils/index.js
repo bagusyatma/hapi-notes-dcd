@@ -1,11 +1,11 @@
-const mapDBtoModel = ({ id, title, body, tags, owner, created_at, updated_at }) => ({
+const mapDBtoModel = ({ id, title, body, tags, created_at, updated_at, username }) => ({
   id,
   title,
   body,
   tags,
-  owner,
   createdAt: created_at,
   updatedAt: updated_at,
+  username,
 });
 
 module.exports = { mapDBtoModel };
