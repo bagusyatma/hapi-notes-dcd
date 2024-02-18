@@ -115,7 +115,6 @@ class NotesService {
         throw error;
       }
 
-      console.log(noteId, userId);
       try {
         await this._collaborationsService.verifyCollaborator(noteId, userId);
       } catch (error) {
