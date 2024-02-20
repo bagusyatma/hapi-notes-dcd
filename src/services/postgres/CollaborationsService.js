@@ -1,5 +1,7 @@
 const { nanoid } = require('nanoid');
 const { Pool } = require('pg');
+const InvariantError = require('../../exceptions/InvariantError');
+const AuthorizationError = require('../../exceptions/AuthorizationError');
 
 class CollaborationsService {
   constructor(cacheService) {
@@ -17,7 +19,7 @@ class CollaborationsService {
     const result = await this._pool.query(query);
 
     if (!result.rowCount) {
-      throw new Error('Kolaborasi gagal ditambahkan');
+      throw new InvariantError('Kolaborasi gagal ditambahkan');
     }
 
     await this._cacheService.delete(`notes:${userId}`);
@@ -33,7 +35,7 @@ class CollaborationsService {
     const result = await this._pool.query(query);
 
     if (!result.rowCount) {
-      throw new Error('Kolaborasi gagal dihapus');
+      throw new InvariantError('Kolaborasi gagal dihapus');
     }
 
     await this._cacheService.delete(`notes:${userId}`);
@@ -48,7 +50,7 @@ class CollaborationsService {
     const result = await this._pool.query(query);
 
     if (!result.rowCount) {
-      throw new Error('Kolaborator tidak ditemukan');
+      throw new AuthorizationError('Anda tidak berhak mengakses resource ini');
     }
   }
 }
