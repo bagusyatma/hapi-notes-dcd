@@ -51,8 +51,6 @@ class NotesService {
       const result = await this._pool.query(query);
       const mappedResult = result.rows.map(mapDBtoModel);
 
-      console.log(`notes:${owner}`);
-
       // catatan akan disimpan pada cache sebelum fungsi getNotes dikembalikan
       await this._cacheService.set(`notes:${owner}`, JSON.stringify(mappedResult));
 
