@@ -2,8 +2,9 @@ const { nanoid } = require('nanoid');
 const { Pool } = require('pg');
 
 class CollaborationsService {
-  constructor() {
+  constructor(cacheService) {
     this._pool = new Pool();
+    this._cacheService = cacheService;
   }
 
   async addCollaboration(noteId, userId) {
@@ -19,6 +20,7 @@ class CollaborationsService {
       throw new Error('Kolaborasi gagal ditambahkan');
     }
 
+    await this._cacheService.delete(`notes:${userId}`);
     return result.rows[0].id;
   }
 
@@ -33,6 +35,8 @@ class CollaborationsService {
     if (!result.rowCount) {
       throw new Error('Kolaborasi gagal dihapus');
     }
+
+    await this._cacheService.delete(`notes:${userId}`);
   }
 
   async verifyCollaborator(noteId, userId) {
